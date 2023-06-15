@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.info.License;
 @SpringBootApplication
 @OpenAPIDefinition(
 		info = @Info(
-			title = "Blog App Rest APIs", 
+			title = "Blog App Rest API",
 			description = "Blog App Rest APIs Documentation",
 			version = "1.0", 
 			contact = @Contact(name = "Ahmed", email = "db.ahmed93@gmail.com"),
