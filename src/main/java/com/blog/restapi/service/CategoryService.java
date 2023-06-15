@@ -2,17 +2,17 @@ package com.blog.restapi.service;
 
 import java.util.List;
 
-import com.blog.restapi.payload.CategoryDto;
+import com.blog.restapi.payload.response.CategoryResponse;
 
 public interface CategoryService {
 
-	CategoryDto addCategory(CategoryDto categoryDto);
+	CategoryResponse addCategory(CategoryResponse categoryDto);
 
-	CategoryDto getCategoryById(Long id);
+	CategoryResponse getCategoryById(Long id);
 
-	List<CategoryDto> getAllCategories();
+	List<CategoryResponse> getAllCategories();
 
-	CategoryDto updateCategory(CategoryDto categoryDto, Long id);
+	CategoryResponse updateCategory(CategoryResponse categoryDto, Long id);
 
 	void deleteCategory(Long id);
 }

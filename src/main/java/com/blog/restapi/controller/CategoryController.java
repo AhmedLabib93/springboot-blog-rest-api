@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,17 +13,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blog.restapi.payload.CategoryDto;
+import com.blog.restapi.payload.response.CategoryResponse;
 import com.blog.restapi.service.CategoryService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/blog/v1/categories")
 @Tag(name = "CRUD Rest API for Category Resource")
 public class CategoryController {
 
@@ -39,21 +37,21 @@ public class CategoryController {
 	@ApiResponse(responseCode = "201", description = "Http Status 201 Created")
 	@SecurityRequirement(name = "Bear Authentication")
 	@PostMapping
-	public ResponseEntity<CategoryDto> createCategory(@RequestBody CategoryDto categoryDto) {
-		return new ResponseEntity<CategoryDto>(categoryService.addCategory(categoryDto), HttpStatus.CREATED);
+	public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryResponse categoryDto) {
+		return new ResponseEntity<CategoryResponse>(categoryService.addCategory(categoryDto), HttpStatus.CREATED);
 	}
 	
 	@Operation(summary = "Get Category Rest API", description = "Get Category Rest API is used to get Category from database")
 	@ApiResponse(responseCode = "200", description = "Http Status 200 Success")
 	@GetMapping("/{id}")
-	public ResponseEntity<CategoryDto> getCategory(@PathVariable("id") Long id) {
+	public ResponseEntity<CategoryResponse> getCategory(@PathVariable("id") Long id) {
 		return ResponseEntity.ok(categoryService.getCategoryById(id));
 	}
 
 	@Operation(summary = "Get All Categegories Rest API", description = "Get All Categories Rest API is used to get categories from database")
 	@ApiResponse(responseCode = "200", description = "Http Status 200 Success")
 	@GetMapping
-	public ResponseEntity<List<CategoryDto>> getAllCategories() {
+	public ResponseEntity<List<CategoryResponse>> getAllCategories() {
 		return ResponseEntity.ok(categoryService.getAllCategories());
 	}
 
@@ -61,9 +59,9 @@ public class CategoryController {
 	@ApiResponse(responseCode = "200", description = "Http Status 200 Success")
 	@SecurityRequirement(name = "Bear Authentication")
 	@PutMapping("{id}")
-	public ResponseEntity<CategoryDto> updateCategory(@RequestBody CategoryDto categoryDto,
-			@PathVariable("id") Long id) {
-		return new ResponseEntity<CategoryDto>(categoryService.updateCategory(categoryDto, id), HttpStatus.OK);
+	public ResponseEntity<CategoryResponse> updateCategory(@RequestBody CategoryResponse categoryDto,
+														   @PathVariable("id") Long id) {
+		return new ResponseEntity<CategoryResponse>(categoryService.updateCategory(categoryDto, id), HttpStatus.OK);
 	}
 
 	@Operation(summary = "Delete Category Rest API", description = "Delete Category Rest API is used to remove category from database")

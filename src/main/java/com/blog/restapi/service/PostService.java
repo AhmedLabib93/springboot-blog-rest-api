@@ -1,12 +1,9 @@
 package com.blog.restapi.service;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.stereotype.Service;
-
-import com.blog.restapi.payload.PostDto;
-import com.blog.restapi.payload.PostResponse;
+import com.blog.restapi.payload.request.PostDto;
+import com.blog.restapi.payload.response.PostResponse;
 
 public interface PostService {
 

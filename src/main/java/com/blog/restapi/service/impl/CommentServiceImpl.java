@@ -12,7 +12,7 @@ import com.blog.restapi.entity.Comment;
 import com.blog.restapi.entity.Post;
 import com.blog.restapi.exception.BlogAPIException;
 import com.blog.restapi.exception.ResourceNotFoundException;
-import com.blog.restapi.payload.CommentDto;
+import com.blog.restapi.payload.response.CommentResponse;
 import com.blog.restapi.repository.CommentRepository;
 import com.blog.restapi.repository.PostRepository;
 import com.blog.restapi.service.CommentService;
@@ -32,19 +32,19 @@ public class CommentServiceImpl implements CommentService {
 		this.modelMapper = modelMapper;
 	}
 
-	private CommentDto mapToDto(Comment comment) {
+	private CommentResponse mapToDto(Comment comment) {
 		/*
-		CommentDto commentDto = new CommentDto();
+		CommentResponse commentDto = new CommentResponse();
 		commentDto.setId(comment.getId());
 		commentDto.setName(comment.getName());
 		commentDto.setEmail(comment.getEmail());
 		commentDto.setBody(comment.getBody());
 		*/
-		CommentDto commentDto = modelMapper.map(comment, CommentDto.class);
+		CommentResponse commentDto = modelMapper.map(comment, CommentResponse.class);
 		return commentDto;
 	}
 
-	private Comment mapToEntity(CommentDto commentDto) {
+	private Comment mapToEntity(CommentResponse commentDto) {
 		/*
 		Comment comment = new Comment();
 		comment.setId(commentDto.getId());
@@ -57,7 +57,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public CommentDto createComment(long postId, CommentDto commentDto) {
+	public CommentResponse createComment(long postId, CommentResponse commentDto) {
 		Comment comment = mapToEntity(commentDto);
 		Post post = postRepository.findById(postId)
 				.orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
@@ -67,13 +67,13 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public List<CommentDto> getCommentsByPostId(long postId) {
+	public List<CommentResponse> getCommentsByPostId(long postId) {
 		List<Comment> comments = commentRepository.findByPostId(postId);
 		return comments.stream().map(comment -> mapToDto(comment)).collect(Collectors.toList());
 	}
 
 	@Override
-	public CommentDto getCommentById(long postId, long commentId) {
+	public CommentResponse getCommentById(long postId, long commentId) {
 		Post post = postRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post", "Id", postId));
 		Comment comment = commentRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("Comment", "Id", commentId));
 		if(!post.getId().equals(comment.getPost().getId())) {
@@ -83,7 +83,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 	
 	@Override
-	public CommentDto updateComment(long postId, long commentId, CommentDto commentDto) {
+	public CommentResponse updateComment(long postId, long commentId, CommentResponse commentDto) {
 		Post post = postRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post", "Id", postId));
 		Comment comment = commentRepository.findById(commentId).orElseThrow(()->new ResourceNotFoundException("Comment", "Id", commentId));
 		if(!post.getId().equals(comment.getPost().getId())) {

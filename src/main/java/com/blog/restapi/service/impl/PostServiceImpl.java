@@ -11,12 +11,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.blog.restapi.entity.Category;
-import com.blog.restapi.entity.Comment;
 import com.blog.restapi.entity.Post;
 import com.blog.restapi.exception.ResourceNotFoundException;
-import com.blog.restapi.payload.CommentDto;
-import com.blog.restapi.payload.PostDto;
-import com.blog.restapi.payload.PostResponse;
+import com.blog.restapi.payload.request.PostDto;
+import com.blog.restapi.payload.response.PostResponse;
 import com.blog.restapi.repository.CategoryRepository;
 import com.blog.restapi.repository.PostRepository;
 import com.blog.restapi.service.PostService;

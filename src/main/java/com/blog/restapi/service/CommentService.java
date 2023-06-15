@@ -2,17 +2,17 @@ package com.blog.restapi.service;
 
 import java.util.List;
 
-import com.blog.restapi.payload.CommentDto;
+import com.blog.restapi.payload.response.CommentResponse;
 
 public interface CommentService {
 
-	CommentDto createComment(long postId, CommentDto commentDto);
+	CommentResponse createComment(long postId, CommentResponse commentDto);
 
-	List<CommentDto> getCommentsByPostId(long postId);
+	List<CommentResponse> getCommentsByPostId(long postId);
 	
-	CommentDto getCommentById(long postId, long commentId);
+	CommentResponse getCommentById(long postId, long commentId);
 	
-	CommentDto updateComment(long postId, long commentId, CommentDto commentDto);
+	CommentResponse updateComment(long postId, long commentId, CommentResponse commentDto);
 	
 	void deleteCommentById(long postId, long commentId);
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blog.restapi.payload.CommentDto;
+import com.blog.restapi.payload.response.CommentResponse;
 import com.blog.restapi.service.CommentService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,7 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/blog/v1")
 @Tag(name="CRUD Rest API for Comment Resource")
 public class CommentController {
 
@@ -38,22 +38,22 @@ public class CommentController {
 	@ApiResponse(responseCode = "201", description = "Http Status 201 Created")
 	@SecurityRequirement(name = "Bear Authentication")
 	@PostMapping("/posts/{postId}/comments")
-	public ResponseEntity<CommentDto> createComment(@PathVariable("postId") long id,
-			@Valid @RequestBody CommentDto commentDto) {
-		return new ResponseEntity<CommentDto>(commentService.createComment(id, commentDto), HttpStatus.CREATED);
+	public ResponseEntity<CommentResponse> createComment(@PathVariable("postId") long id,
+			@Valid @RequestBody CommentResponse commentDto) {
+		return new ResponseEntity<CommentResponse>(commentService.createComment(id, commentDto), HttpStatus.CREATED);
 	}
 
 	@Operation(summary = "GetAll Comments Rest API", description = "GetAll Comments Rest API is used to get all comments for post from database")
 	@ApiResponse(responseCode = "200", description = "Http Status 200 Success")
 	@GetMapping("/posts/{postId}/comments")
-	public List<CommentDto> getAllComments(@PathVariable long postId) {
+	public List<CommentResponse> getAllComments(@PathVariable long postId) {
 		return commentService.getCommentsByPostId(postId);
 	}
 
 	@Operation(summary = "Get Comment by ID Rest API", description = "Get Comment By Id Rest API is used to get comment from database by id")
 	@ApiResponse(responseCode = "200", description = "Http Status 200 Success")
 	@GetMapping("/posts/{postId}/comments/{commentId}")
-	public ResponseEntity<CommentDto> getCommentById(@PathVariable long postId, @PathVariable long commentId) {
+	public ResponseEntity<CommentResponse> getCommentById(@PathVariable long postId, @PathVariable long commentId) {
 		return new ResponseEntity<>(commentService.getCommentById(postId, commentId), HttpStatus.OK);
 	}
 
@@ -61,10 +61,10 @@ public class CommentController {
 	@ApiResponse(responseCode = "200", description = "Http Status 200 Success")
 	@SecurityRequirement(name = "Bear Authentication")
 	@PutMapping("/posts/{postId}/comments/{commentId}")
-	public ResponseEntity<CommentDto> updateComment(@PathVariable long postId, @PathVariable long commentId,
-			@Valid @RequestBody CommentDto commentDto) {
+	public ResponseEntity<CommentResponse> updateComment(@PathVariable long postId, @PathVariable long commentId,
+			@Valid @RequestBody CommentResponse commentDto) {
 
-		CommentDto updatedComment = commentService.updateComment(postId, commentId, commentDto);
+		CommentResponse updatedComment = commentService.updateComment(postId, commentId, commentDto);
 		return ResponseEntity.ok(updatedComment);
 	}
 

@@ -2,7 +2,6 @@ package com.blog.restapi.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blog.restapi.payload.PostDto;
-import com.blog.restapi.payload.PostResponse;
+import com.blog.restapi.payload.request.PostDto;
+import com.blog.restapi.payload.response.PostResponse;
 import com.blog.restapi.service.PostService;
 import com.blog.restapi.utils.AppConstants;
 
@@ -28,7 +27,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/blog/v1/posts")
 @Tag(name = "CRUD Rest API for Post Resource")
 public class PostController {
 
@@ -42,7 +41,7 @@ public class PostController {
 	@Operation(summary = "Create Post Rest API", description = "Create Post Rest API is used to save post into database")
 	@ApiResponse(responseCode = "201", description = "Http Status 201 Created")
 	@SecurityRequirement(name = "Bear Authentication")
-	// @PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {
 		return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
@@ -69,7 +68,7 @@ public class PostController {
 	@Operation(summary = "Update Post Rest API", description = "Update Post Rest API is used to update post in database")
 	@ApiResponse(responseCode = "200", description = "Http Status 200 Success")
 	@SecurityRequirement(name = "Bear Authentication")
-	// @PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{postId}")
 	public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto, @PathVariable(name = "postId") long postId) {
 		return new ResponseEntity<PostDto>(postService.updatePost(postDto, postId), HttpStatus.OK);
@@ -78,7 +77,7 @@ public class PostController {
 	@Operation(summary = "Delete Post Rest API", description = "Delete Post Rest API is used to remove post from database")
 	@ApiResponse(responseCode = "200", description = "Http Status 200 Success")
 	@SecurityRequirement(name = "Bear Authentication")
-	// @PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{postId}")
 	public ResponseEntity<String> deletePostById(@PathVariable(name = "postId") long postId) {
 		postService.deletePostById(postId);

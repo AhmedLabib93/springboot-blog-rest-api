@@ -24,6 +24,7 @@ import com.blog.restapi.service.AuthService;
 @Service
 public class AuthServiceImpl implements AuthService {
 
+
 	private AuthenticationManager authenticationManager;
 	private UserRepository userRepository;
 	private RoleRepository roleRepository;
@@ -42,15 +43,10 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public String login(LoginDto loginDto) {
-
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginDto.getUsernameOrEmail(), loginDto.getPassword()));
-
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-
-		String token = jwtTokenProvider.generateJwtToken(authentication);
-
-		return token;
+		return jwtTokenProvider.generateJwtToken(authentication);
 	}
 
 	@Override

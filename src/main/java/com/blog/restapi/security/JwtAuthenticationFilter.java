@@ -2,6 +2,7 @@ package com.blog.restapi.security;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,37 +20,25 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
-	private UserDetailsService userDetailsService;
 
-	public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, UserDetailsService userDetailsService) {
-		super();
-		this.jwtTokenProvider = jwtTokenProvider;
-		this.userDetailsService = userDetailsService;
-	}
+	@Autowired
+	private UserDetailsService userDetailsService;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-
 		String token = getTokenFromRequest(request);
-
 		if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
 			String username = jwtTokenProvider.getUsername(token);
-
 			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-			UsernamePasswordAuthenticationToken authenticationtoken = new UsernamePasswordAuthenticationToken(
+			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 					userDetails, null, userDetails.getAuthorities());
-
-			authenticationtoken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-			
-			SecurityContextHolder.getContext().setAuthentication(authenticationtoken);
-			
+			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}
-		
 		filterChain.doFilter(request, response);
-
 	}
 
 	private String getTokenFromRequest(HttpServletRequest request) {
